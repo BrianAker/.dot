@@ -1,0 +1,138 @@
+set-window-option -g mode-keys vi
+# Setup 'v' to begin selection as in Vim
+bind-key -t vi-copy v begin-selection
+bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
+
+# Automatically set window title
+setw -g automatic-rename
+
+#previous pane
+bind-key -n C-up prev
+bind-key -n C-left prev
+
+#next pane
+bind-key -n C-right next
+bind-key -n C-down next
+
+set-option -g assume-paste-time 1
+set-option -g base-index 0
+set-option -g bell-action any
+set-option -g bell-on-alert off
+set-option -g default-command ""
+set-option -g default-shell "/bin/bash"
+set-option -g destroy-unattached on
+set-option -g detach-on-destroy on
+set-option -g display-panes-active-colour red
+set-option -g display-panes-colour blue
+set-option -g display-panes-time 1000
+set-option -g display-time 750
+set-option -g history-limit 2000
+set-option -g lock-after-time 0
+set-option -g lock-command "lock -np"
+set-option -g message-command-style fg=yellow,bg=black
+set-option -g message-style fg=black,bg=yellow
+set-option -g mouse off
+set-option -g mouse-utf8 off
+set-option -g prefix C-o
+set-option -g renumber-windows on
+set-option -g repeat-time 500
+set-option -g set-remain-on-exit on
+set-option -g set-titles on
+set-option -g set-titles-string "#S:#I:#W - "#T" #{session_alerts}"
+set-option -g status on
+set-option -g status-interval 15
+set-option -g status-justify left
+set-option -g status-keys vi
+set-option -g status-left "[#S] "
+set-option -g status-left-length 10
+set-option -g status-left-style default
+set-option -g status-position bottom
+set-option -g status-right " "#{=21:pane_title}" %H:%M %d-%b-%y"
+set-option -g status-right-length 40
+set-option -g status-right-style default
+set-option -g status-style fg=black,bg=green
+set-option -g status-utf8 off
+set-option -g update-environment "DISPLAY SSH_ASKPASS SSH_AUTH_SOCK SSH_AGENT_PID SSH_CONNECTION WINDOWID XAUTHORITY"
+set-option -g visual-activity off
+set-option -g visual-bell off
+set-option -g visual-silence off
+set-option -g word-separators " -_@"
+
+# Bind appropriate commands similar to screen.
+# lockscreen ^X x
+unbind ^X
+bind ^X lock-server
+unbind x
+bind x lock-server
+ 
+# screen ^C c
+unbind ^C
+bind ^C new-window
+bind c
+bind c new-window
+ 
+# detach ^D d
+unbind ^D
+bind ^D detach
+ 
+# displays *
+unbind *
+bind * list-clients
+ 
+# next ^@ ^N sp n
+unbind ^@
+bind ^@ next-window
+unbind ^N
+bind ^N next-window
+unbind " "
+bind " " next-window
+unbind n
+bind n next-window
+ 
+# title A
+unbind A
+bind A command-prompt "rename-window %%"
+ 
+# other ^A
+unbind ^A
+bind ^A last-window
+ 
+# prev ^H ^P p ^?
+unbind ^H
+bind ^H previous-window
+unbind ^P
+bind ^P previous-window
+unbind p
+bind p previous-window
+unbind BSpace
+bind BSpace previous-window
+ 
+# windows ^W w
+unbind ^W
+bind ^W list-windows
+unbind w
+bind w list-windows
+ 
+# quit \
+unbind \
+bind \ confirm-before "kill-server"
+ 
+# kill K k
+unbind K
+bind K confirm-before "kill-window"
+unbind k
+bind k confirm-before "kill-window"
+ 
+# redisplay ^L l
+unbind ^L
+bind ^L refresh-client
+unbind l
+bind l refresh-client
+ 
+# More straight forward key bindings for splitting
+unbind %
+bind | split-window -h
+bind v split-window -h
+unbind '"'
+bind - split-window -v
+bind h split-window -v

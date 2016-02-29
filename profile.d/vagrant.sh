@@ -1,0 +1,10 @@
+# vim:ft=sh
+
+if [ -z "$VAGRANTRC_INCLUDED" ]; then
+  VAGRANTRC_INCLUDED=yes
+  export VAGRANTRC_INCLUDED
+
+  VAGRANT_DEFAULT_PROVIDER="vmware_fusion"
+  export VAGRANT_DEFAULT_PROVIDER
+fi
+
