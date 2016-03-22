@@ -14,9 +14,20 @@ MAINTAINERCLEAN:=
 PREREQ=
 
 MKDIR_P:= mkdir -p
+INSTALL_d:= install -d
+INSTALL:= install
 TOUCH:= touch
 
-DIRECTORIES:= $(addsuffix /$(dirstamp), $(DIR))
+DIRECTORIES:=
+INSTALL_TARGETS:=
+
+DIRECTORIES+= $(addsuffix /$(dirstamp), $(DIR))
+INSTALL_TARGETS+= $(HOME)/.ansible.cfg
+INSTALL_TARGETS+= $(HOME)/.localhost/localhost
+
+# Subdirectories, in random order
+dir	:= profile.d
+include		$(dir)/Rules.mk
 
 PREREQ+= $(DIRECTORIES)
 
@@ -43,11 +54,17 @@ maintainer-clean: distclean
 .PHONY: check
 check: all $(CHECK)
 
+$(HOME)/.ansible.cfg: ansible.cfg
+	@$(INSTALL) $< $@
+	
+$(HOME)/.localhost/localhost: inventory/localhost
+	@$(MKDIR_P) $(@D)
+	@$(INSTALL) $< $@
+
 .PHONY: install
-install: all
+install: all $(INSTALL_TARGETS)
 
 all: $(PREREQ) $(BUILD)
-	@$(ANSIBLE_PLAYBOOK) go.yaml
 
 .DEFAULT_GOAL:= all
 
