@@ -8,7 +8,7 @@ ANSIBLE_PLAYBOOK:= ansible-playbook
 
 BUILD:=
 CHECK:=
-DIR:= config iso
+DIR:= config iso build
 DISTCLEAN:=
 MAINTAINERCLEAN:=
 PREREQ=
@@ -19,15 +19,17 @@ INSTALL:= install
 TOUCH:= touch
 
 DIRECTORIES:=
-INSTALL_TARGETS:=
+INSTALL_TARGETS=
 
 DIRECTORIES+= $(addsuffix /$(dirstamp), $(DIR))
 INSTALL_TARGETS+= $(HOME)/.ansible.cfg
 INSTALL_TARGETS+= $(HOME)/.localhost/localhost
 
 # Subdirectories, in random order
-dir	:= profile.d
-include		$(dir)/Rules.mk
+dir	= profile.d
+include	$(dir)/Rules.mk
+dir	= files
+include	$(dir)/Rules.mk
 
 PREREQ+= $(DIRECTORIES)
 
@@ -37,6 +39,7 @@ $(DIRECTORIES):
 
 .PHONY: clean
 clean:
+	@rm -rf $(addsuffix /*, $(DIR))
 	@rm -rf $(BUILD)
 
 .PHONY: distclean

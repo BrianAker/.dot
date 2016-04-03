@@ -4,12 +4,11 @@ sp 		:= $(sp).x
 dirstack_$(sp)	:= $(d)
 d		:= $(dir)
 
-TARGETS_$(d) := $(wildcard $(d)/*.sh)
+PROFILE_D_$(d) := $(foreach profile_d_file, $(wildcard $(d)/*.sh), $(notdir $(profile_d_file)))
 
-ALL_TARGETS_$(d) := $(addprefix $(HOME)/., $(TARGETS_$(d)))
+ALL_PROFILE_D_$(d) := $(foreach base_file,$(PROFILE_D_$(d)), $(addprefix $(HOME)/.$(d)/, $(base_file)))
 
-$(ALL_TARGETS_$(d)):
-	install $(d)/$(@F)  $@
+$(HOME)/.$(d)/%: $(d)/%.sh
+	install $< $@
 
-INSTALL_TARGETS+= $(ALL_TARGETS_$(d))
-
+INSTALL_TARGETS+= $(ALL_PROFILE_D_$(d))

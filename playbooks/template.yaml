@@ -12,9 +12,14 @@
 - name: template expander
   hosts: localhost
   connection: local
-  no_log: True
 
   tasks:
+    - stat:
+        path: "{{ ansible_env.SRC }}"
+      register: st
+    - fail:
+        msg: "File not found: {{ ansible_env.SRC }}"
+        when: ! st.stat.exists
     - template:
         src: "{{ ansible_env.SRC }}" 
         dest: "{{ ansible_env.DEST }}" 
