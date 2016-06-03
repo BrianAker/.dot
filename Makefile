@@ -17,6 +17,7 @@ MKDIR_P:= mkdir -p
 TOUCH:= touch
 
 DIRECTORIES:= $(addsuffix /$(dirstamp), $(DIR))
+INSTALL_PM:= $(HOME)/Library/Perl5/lib/perl5/install.pm
 
 PREREQ+= $(DIRECTORIES)
 
@@ -48,6 +49,10 @@ install: all
 
 all: $(PREREQ) $(BUILD)
 	@$(ANSIBLE_PLAYBOOK) go.yaml
+
+$(INSTALL_PM): 
+	echo "sudo cpan local::lib"
+	exit 1
 
 .DEFAULT_GOAL:= all
 
