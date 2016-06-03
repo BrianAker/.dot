@@ -4,7 +4,8 @@ if [ -z "$ENVRC_INCLUDED" ]; then
   ENVRC_INCLUDED=yes
   export ENVRC_INCLUDED
 
-  LC_CTYPE=C 
-  LANG=C
-  export LC_CTYPE LANG
+  LC_CTYPE="en_US.UTF-8"
+  LC_ALL="en_US.UTF-8"
+  LANG="en_US.UTF-8"
+  export LC_CTYPE LC_ALL LANG
 fi

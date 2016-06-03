@@ -1,0 +1,25 @@
+#!/usr/bin/env ANSIBLE_HOSTS="localhost," ansible-playbook
+#
+# Huh?
+#   Often I want to render a template but I don't really want to deal with all
+#   of ansible. So this is command line tool for generating and install a 
+#   jinja template using ansible. No inventory file is required.
+#
+# Example:
+#   SRC=./templates/curlrc.j2 DEST=~/.curlrc ./template.yaml 
+#
+---
+- name: template expander
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - stat:
+        path: "{{ ansible_env.SRC }}"
+      register: st
+    - fail:
+        msg: "File not found: {{ ansible_env.SRC }}"
+        when: ! st.stat.exists
+    - template:
+        src: "{{ ansible_env.SRC }}" 
+        dest: "{{ ansible_env.DEST }}" 

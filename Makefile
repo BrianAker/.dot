@@ -8,16 +8,28 @@ ANSIBLE_PLAYBOOK:= ansible-playbook
 
 BUILD:=
 CHECK:=
-DIR:= config iso
+DIR:= config iso build
 DISTCLEAN:=
 MAINTAINERCLEAN:=
 PREREQ=
 
 MKDIR_P:= mkdir -p
+INSTALL_d:= install -d
+INSTALL:= install
 TOUCH:= touch
 
 DIRECTORIES:= $(addsuffix /$(dirstamp), $(DIR))
 INSTALL_PM:= $(HOME)/Library/Perl5/lib/perl5/install.pm
+
+DIRECTORIES+= $(addsuffix /$(dirstamp), $(DIR))
+INSTALL_TARGETS+= $(HOME)/.ansible.cfg
+INSTALL_TARGETS+= $(HOME)/.localhost/localhost
+
+# Subdirectories, in random order
+dir	= profile.d
+include	$(dir)/Rules.mk
+dir	= files
+include	$(dir)/Rules.mk
 
 PREREQ+= $(DIRECTORIES)
 
@@ -27,6 +39,7 @@ $(DIRECTORIES):
 
 .PHONY: clean
 clean:
+	@rm -rf $(addsuffix /*, $(DIR))
 	@rm -rf $(BUILD)
 
 .PHONY: distclean
@@ -44,11 +57,17 @@ maintainer-clean: distclean
 .PHONY: check
 check: all $(CHECK)
 
+$(HOME)/.ansible.cfg: ansible.cfg
+	@$(INSTALL) $< $@
+	
+$(HOME)/.localhost/localhost: inventory/localhost
+	@$(MKDIR_P) $(@D)
+	@$(INSTALL) $< $@
+
 .PHONY: install
-install: all
+install: all $(INSTALL_TARGETS)
 
 all: $(PREREQ) $(BUILD)
-	@$(ANSIBLE_PLAYBOOK) go.yaml
 
 $(INSTALL_PM): 
 	echo "sudo cpan local::lib"
