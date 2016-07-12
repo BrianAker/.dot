@@ -1,6 +1,6 @@
 # vim:ft=sh
 
-if [ -z "$CONFIGURERC_INCLUDED" ]; then
+if [[ -z "$CONFIGURERC_INCLUDED" ]]; then
   CONFIGURERC_INCLUDED=yes
   export CONFIGURERC_INCLUDED
 
