@@ -1,18 +1,15 @@
 # vim:ft=sh
 
 if [[ $PS1 ]]; then
-  if [[ -z $EDITORRC_INCLUDED ]]; then
-    EDITORRC_INCLUDED=yes
-    export EDITORRC_INCLUDED
-
+  if [[ -z "$EDITOR" ]]; then
     VISUAL=
     EDITOR=
 
-    if [ -x /usr/local/bin/vim ]; then
+    if [[ -x /usr/local/bin/vim ]]; then
       alias vim='/usr/local/bin/vim'
       alias vi='/usr/local/bin/vim'
       EDITOR=/usr/local/bin/vim
-    elif [ -x /usr/bin/vim ]; then
+    elif [[ -x /usr/bin/vim ]]; then
       alias vim='/usr/bin/vim'
       alias vi='/usr/bin/vim'
       EDITOR=/usr/bin/vim
@@ -20,7 +17,7 @@ if [[ $PS1 ]]; then
       EDITOR=vi
     fi
 
-    if [[ $DISPLAY ]]; then
+    if [[ -n "$DISPLAY" || -n "$TERM_PROGRAM" ]]; then
       if [ -x /usr/local/bin/mvim ]; then
         VISUAL=/usr/local/bin/mvim
         if [ -z "$EDITOR" ]; then

@@ -1,8 +1,5 @@
 # vim:ft=sh
-if [ -z "$BREWRC_INCLUDED" ]; then
-  BREWRC_INCLUDED=yes
-  export BREWRC_INCLUDED
-
+if [ -z "$HOMEBREW_EDITOR" ]; then
   HOMEBREW_EDITOR=vim
   export HOMEBREW_EDITOR
 
