@@ -6,6 +6,8 @@ dirstamp:= .dirstamp
 
 ANSIBLE_PLAYBOOK:= ansible-playbook
 
+PROFILE_D:= $(HOME)/.profile.d
+
 BUILD:=
 CHECK:=
 DIR:= config iso build
@@ -21,7 +23,6 @@ TOUCH:= touch
 DIRECTORIES:= $(addsuffix /$(dirstamp), $(DIR))
 INSTALL_PM:= $(HOME)/Library/Perl5/lib/perl5/install.pm
 
-DIRECTORIES+= $(addsuffix /$(dirstamp), $(DIR))
 INSTALL_TARGETS+= $(HOME)/.ansible.cfg
 INSTALL_TARGETS+= $(HOME)/.localhost/localhost
 
@@ -62,6 +63,18 @@ $(HOME)/.ansible.cfg: ansible.cfg
 	
 $(HOME)/.localhost/localhost: inventory/localhost
 	@$(MKDIR_P) $(@D)
+	@$(INSTALL) $< $@
+
+INSTALL_TARGETS += $(PROFILE_D)/README
+$(PROFILE_D)/README:
+	@$(MKDIR_P) $(@D)
+	@$(TOUCH) $@
+
+PROFILE_D_FILES_SRC := $(wildcard profile.d/*.sh)
+PROFILE_D_FILES_DST := $(addprefix $(PROFILE_D)/,$(notdir $(PROFILE_D_FILES_SRC)))
+INSTALL_TARGETS += $(PROFILE_D_FILES_DST)
+
+$(PROFILE_D_FILES_DST): $(PROFILE_D_FILES_SRC)
 	@$(INSTALL) $< $@
 
 .PHONY: install
