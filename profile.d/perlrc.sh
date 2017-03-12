@@ -7,5 +7,7 @@ if [[ -z "$PERLRC_INCLUDED" ]]; then
   PERL_CPANM_OPT="--prompt --reinstall -l ~/Library/Perl5"
   export PERL_CPANM_OPT
   # shellcheck disable=SC2086
-  eval "$(perl -I$HOME/Library/Perl5/lib/perl5 -Mlocal::lib=$HOME/Library/Perl5)"
+  if [[ -f "$HOME/" ]]; then
+    eval "$(perl -I$HOME/Library/Perl5/lib/perl5/ -Mlocal::lib=$HOME/Library/Perl5)"
+  fi
 fi
