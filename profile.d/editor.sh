@@ -5,7 +5,12 @@ if [[ $PS1 ]]; then
     VISUAL=
     EDITOR=
 
-    if [[ -x /usr/local/bin/vim ]]; then
+    if [[ -x /Applications/MacVim.app/Contents/bin/vim ]]; then
+      EDITOR=/Applications/MacVim.app/Contents/bin/vim
+      alias vim='/Applications/MacVim.app/Contents/bin/vim'
+      alias vi='/Applications/MacVim.app/Contents/bin/vim'
+      prepend_path "$(dirname ${EDITOR})"
+    elif [[ -x /usr/local/bin/vim ]]; then
       alias vim='/usr/local/bin/vim'
       alias vi='/usr/local/bin/vim'
       EDITOR=/usr/local/bin/vim
@@ -18,7 +23,13 @@ if [[ $PS1 ]]; then
     fi
 
     if [[ -n "$DISPLAY" || -n "$TERM_PROGRAM" ]]; then
-      if [ -x /usr/local/bin/mvim ]; then
+      if [[ -x /Applications/MacVim.app/Contents/bin/mvim ]]; then
+        VISUAL=/Applications/MacVim.app/Contents/bin/mvim
+        if [ -z "$EDITOR" ]; then
+          alias vi='"$VISUAL"'
+          EDITOR="$VISUAL"
+        fi
+      elif [[ -x /usr/local/bin/mvim ]]; then
         VISUAL=/usr/local/bin/mvim
         if [ -z "$EDITOR" ]; then
           alias vi='"$VISUAL"'
