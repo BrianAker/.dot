@@ -8,10 +8,32 @@ then
 
   prepend_path ()
   {
-    if [ -d "$1" ]; then
+    if [ -f "$1" ]; then
+      CHECKED_PATH=$(dirname "$1")
+    else
+      CHECKED_PATH="$1"
+    fi
+
+    if [ -d "$CHECKED_PATH" ]; then
       case ":$PATH:" in
-        *":$1:"*) :;; # already there
-        *) PATH="$1:$PATH";;
+        *":$CHECKED_PATH:"*) :;; # already there
+        *) PATH="$CHECKED_PATH:$PATH";;
+      esac
+    fi
+  }
+
+  append_path ()
+  {
+    if [ -f "$1" ]; then
+      CHECKED_PATH=$(dirname "$1")
+    else
+      CHECKED_PATH="$1"
+    fi
+
+    if [ -d "$CHECKED_PATH" ]; then
+      case ":$PATH:" in
+        *":$CHECKED_PATH:"*) :;; # already there
+        *) PATH="$PATH:$CHECKED_PATH";;
       esac
     fi
   }
@@ -24,17 +46,6 @@ then
         *) MANPATH="$1:$MANPATH";;
       esac
     fi
-  }
-
-  append_local ()
-  {
-    local LOCAL_DIRECTORIES=(/usr/local/bin /usr/local/sbin)
-    for x in "${LOCAL_DIRECTORIES[@]}"; do
-      prepend_path "$x"
-    done
-
-    # For expanding MANPATH 
-    prepend_manpath /usr/local/share/man
   }
 
   source_profile_d ()

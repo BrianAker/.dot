@@ -5,9 +5,9 @@ if [ -z "$HOMEBREW_EDITOR" ]; then
 
   check_brew ()
   {
-    if [ -x /usr/local/bin/brew ]; then
-
-      append_local
+    BREW_PATH=/usr/local/bin/brew
+    if [ -x "$BREW_PATH" ]; then
+      prepend_path "$BREW_PATH"
 
       local BREW_DIRECTORIES=(/usr/local/opt/bison/bin /usr/local/opt/flex/bin /usr/local/opt/gperf/bin /usr/local/opt/gettext/bin)
       for x in "${BREW_DIRECTORIES[@]}"; do
