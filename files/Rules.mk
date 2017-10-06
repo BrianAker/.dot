@@ -11,6 +11,8 @@ ALL_DOT_FILES_$(d) := $(foreach base_file,$(DOT_FILES_$(d)),$(addprefix $(HOME)/
 $(HOME)/.%: $(d)/%.sh
 	install $< $@
 
+INSTALL_TARGETS+=$(HOME)/.customrc
+
 INSTALL_TARGETS+= $(ALL_DOT_FILES_$(d))
 
 .PHONY: dot_file_print

@@ -1,4 +1,5 @@
 # vim:ft=make
+MAKEFLAGS += --no-builtin-rules
 
 .SUFFIXES:
 
