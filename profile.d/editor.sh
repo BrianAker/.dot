@@ -9,7 +9,7 @@ if [[ $PS1 ]]; then
       EDITOR=/Applications/MacVim.app/Contents/bin/vim
       alias vim='/Applications/MacVim.app/Contents/bin/vim'
       alias vi='/Applications/MacVim.app/Contents/bin/vim'
-      prepend_path "$(dirname ${EDITOR})"
+      declare -F prepend_path && prepend_path "$EDITOR"
     elif [[ -x /usr/local/bin/vim ]]; then
       alias vim='/usr/local/bin/vim'
       alias vi='/usr/local/bin/vim'
@@ -45,5 +45,17 @@ if [[ $PS1 ]]; then
     export VISUAL
     export EDITOR
     export GIT_EDITOR="$VISUAL"
+
+
+    if [ -x /usr/bin/vim ]; then
+      if [ ! -d /usr/bin/vim ]; then
+        SUDO_EDITOR=/usr/bin/vim
+      fi
+    fi
+
+    if [ -z "$SUDO_EDITOR" ]; then
+      SUDO_EDITOR=/usr/bin/vi
+    fi
+    export SUDO_EDITOR
   fi
 fi
