@@ -1,6 +1,6 @@
 # vim:ft=sh
 
-upgrade_pip() {
+pip_upgrade() {
   pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
 }
  
