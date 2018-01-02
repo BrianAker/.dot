@@ -7,11 +7,16 @@ dirstamp:= .dirstamp
 
 ANSIBLE_PLAYBOOK:= ansible-playbook
 
+INSTALL_DIR_TARGETS=
+PREREQ_DIR=
+
+INSTALL_DIR_TARGETS+= $(PROFILE_D)
 PROFILE_D:= $(HOME)/.profile.d
+
+PREREQ_DIR+= config iso build
 
 BUILD:=
 CHECK:=
-DIR:= config iso build
 DISTCLEAN:=
 MAINTAINERCLEAN:=
 PREREQ=
@@ -21,7 +26,8 @@ INSTALL_d:= install -d
 INSTALL:= install
 TOUCH:= touch
 
-DIRECTORIES:= $(addsuffix /$(dirstamp), $(DIR))
+build_DIRECTORIES:= $(addsuffix /$(dirstamp), $(PREREQ_DIR))
+install__DIRECTORIES:= $(addsuffix /$(dirstamp), $(INSTALL_DIR_TARGETS))
 INSTALL_PM:= $(HOME)/Library/Perl5/lib/perl5/install.pm
 
 INSTALL_TARGETS+= $(HOME)/.ansible.cfg
@@ -33,9 +39,16 @@ include	$(dir)/Rules.mk
 dir	= files
 include	$(dir)/Rules.mk
 
-PREREQ+= $(DIRECTORIES)
+PREREQ+= $(build_DIRECTORIES)
 
-$(DIRECTORIES):
+$(INSTALL_DIR_TARGETS)/$(dirstamp):
+	@$(MKDIR_P) $(@D)
+	@$(TOUCH) $@
+
+.PHONY: install_dir_am
+install_dir_am: $(install__DIRECTORIES)
+
+$(PREREQ_DIR)/$(dirstamp):
 	@$(MKDIR_P) $(@D)
 	@$(TOUCH) $@
 
@@ -49,6 +62,7 @@ distclean: clean distclean-am
 
 .PHONY: distclean-am
 distclean-am:
+	@rm -rf $(INSTALL_DIR_TARGETS)
 	@rm -rf $(PREREQ)
 	@rm -rf $(DISTCLEAN)
 
@@ -66,11 +80,6 @@ $(HOME)/.localhost/localhost: inventory/localhost
 	@$(MKDIR_P) $(@D)
 	@$(INSTALL) $< $@
 
-INSTALL_TARGETS += $(PROFILE_D)/README
-$(PROFILE_D)/README:
-	@$(MKDIR_P) $(@D)
-	@$(TOUCH) $@
-
 PROFILE_D_FILES_SRC := $(wildcard profile.d/*.sh)
 PROFILE_D_FILES_DST := $(addprefix $(PROFILE_D)/,$(notdir $(PROFILE_D_FILES_SRC)))
 INSTALL_TARGETS += $(PROFILE_D_FILES_DST)
@@ -79,7 +88,7 @@ $(PROFILE_D_FILES_DST): $(PROFILE_D_FILES_SRC)
 	@$(INSTALL) $< $@
 
 .PHONY: install
-install: all $(INSTALL_TARGETS)
+install: all $(install__DIRECTORIES) $(INSTALL_TARGETS)
 
 all: $(PREREQ) $(BUILD)
 
