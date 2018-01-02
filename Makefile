@@ -9,6 +9,7 @@ ANSIBLE_PLAYBOOK:= ansible-playbook
 
 INSTALL_DIR_TARGETS=
 PREREQ_DIR=
+am_DIRECTORIES=
 
 INSTALL_DIR_TARGETS+= $(PROFILE_D)
 PROFILE_D:= $(HOME)/.profile.d
@@ -22,12 +23,20 @@ MAINTAINERCLEAN:=
 PREREQ=
 
 MKDIR_P:= mkdir -p
-INSTALL_d:= install -d
+INSTALL_D:= install -d
 INSTALL:= install
 TOUCH:= touch
+TOUCH_R:= touch -r
 
-build_DIRECTORIES:= $(addsuffix /$(dirstamp), $(PREREQ_DIR))
-install__DIRECTORIES:= $(addsuffix /$(dirstamp), $(INSTALL_DIR_TARGETS))
+am_build__DIRECTORIES= $(addprefix $(VIM_DIR)/, $(INSTALL_DIR_TARGETS))
+build__DIRECTORIES= $(addsuffix /$(dirstamp), $(am_install__DIRECTORIES))
+
+am_install__DIRECTORIES= $(addprefix $(VIM_DIR)/, $(INSTALL_DIR_TARGETS))
+install__DIRECTORIES= $(addsuffix /$(dirstamp), $(am_install__DIRECTORIES))
+
+am_DIRECTORIES+= $(build__DIRECTORIES)
+am_DIRECTORIES+= $(install__DIRECTORIES)
+
 INSTALL_PM:= $(HOME)/Library/Perl5/lib/perl5/install.pm
 
 INSTALL_TARGETS+= $(HOME)/.ansible.cfg
@@ -39,18 +48,14 @@ include	$(dir)/Rules.mk
 dir	= files
 include	$(dir)/Rules.mk
 
-PREREQ+= $(build_DIRECTORIES)
+PREREQ+= $(build__DIRECTORIES)
 
-$(INSTALL_DIR_TARGETS)/$(dirstamp):
-	@$(MKDIR_P) $(@D)
+$(am_DIRECTORIES):
+	@$(INSTALL_D) $(@D)
 	@$(TOUCH) $@
 
 .PHONY: install_dir_am
 install_dir_am: $(install__DIRECTORIES)
-
-$(PREREQ_DIR)/$(dirstamp):
-	@$(MKDIR_P) $(@D)
-	@$(TOUCH) $@
 
 .PHONY: clean
 clean:
@@ -63,7 +68,6 @@ distclean: clean distclean-am
 .PHONY: distclean-am
 distclean-am:
 	@rm -rf $(INSTALL_DIR_TARGETS)
-	@rm -rf $(PREREQ)
 	@rm -rf $(DISTCLEAN)
 
 .PHONY: maintainer-clean
