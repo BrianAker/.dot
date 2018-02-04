@@ -1,9 +1,6 @@
 # vim:ft=sh
 brew () {
-  deactivate
-  /usr/local/bin/brew "$@"
-  # shellcheck disable=SC1091
-  . /Volumes/Users/brian/.python/bin/activate
+  env -i HOME="$HOME" /usr/local/bin/brew "$@"
 }
 
 if [ -z "$HOMEBREWRC_INCLUDED" ]; then

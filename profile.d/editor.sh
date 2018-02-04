@@ -1,8 +1,10 @@
-#!/bin/bash
 # vim:ft=sh
 
-if [[ $PS1 ]]; then
-  if [[ -z $EDITOR ]]; then
+if [ -z "${$PS1+v" ]; then
+  if [ -z ${EDITORRC_INCLUDED+x} ]; then
+    EDITORRC_INCLUDED=yes
+    export EDITORRC_INCLUDED
+
     unset VISUAL
     unset EDITOR
 
@@ -23,7 +25,7 @@ if [[ $PS1 ]]; then
       EDITOR='vi'
     fi
 
-    if [[ -n "$DISPLAY" || -n "$TERM_PROGRAM" ]]; then
+    if [[ -n $DISPLAY && -n $TERM_PROGRAM ]]; then
       if [[ -x /Applications/MacVim.app/Contents/bin/mvim ]]; then
         VISUAL='/Applications/MacVim.app/Contents/bin/mvim'
         if [[ -z $EDITOR ]]; then

@@ -1,10 +1,7 @@
-#!/bin/bash
 # vim:ft=sh
 
-if [ ! -e "$HOME/.no_customrc" ]
-then
-  if [ -z "$CUSTOMRC_INCLUDED" ]
-  then
+if [ ! -e "$HOME/.no_customrc" ]; then
+  if [ -z ${CUSTOMRC_INCLUDED+x} ]; then
     CUSTOMRC_INCLUDED=yes
     export CUSTOMRC_INCLUDED
 

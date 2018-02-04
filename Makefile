@@ -8,30 +8,34 @@ dirstamp:= .dirstamp
 ANSIBLE_PLAYBOOK:= ansible-playbook
 
 INSTALL_DIR_TARGETS=
-PREREQ_DIR=
+PREREQ_DIR_TARGETS=
+BUILD_DIR_TARGETS=
 am_DIRECTORIES=
+PREREQ=
 
-INSTALL_DIR_TARGETS+= $(PROFILE_D)
-PROFILE_D:= $(HOME)/.profile.d
+INSTALL_DIR_TARGETS+= .profile_d
+PROFILE_D= $(HOME)/.profile.d
 
-PREREQ_DIR+= config iso build
+PREREQ_DIR_TARGETS+= config iso
+BUILD_DIR_TARGETS+= build
 
 BUILD:=
 CHECK:=
 DISTCLEAN:=
 MAINTAINERCLEAN:=
-PREREQ=
 
 MKDIR_P:= mkdir -p
 INSTALL_D:= install -d
+INSTALL_CD:= install -d
 INSTALL:= install
 TOUCH:= touch
 TOUCH_R:= touch -r
 
-am_build__DIRECTORIES= $(addprefix $(VIM_DIR)/, $(INSTALL_DIR_TARGETS))
-build__DIRECTORIES= $(addsuffix /$(dirstamp), $(am_install__DIRECTORIES))
+prereq__DIRECTORIES= $(addsuffix /$(dirstamp), $(PREREQ_DIR_TARGETS))
 
-am_install__DIRECTORIES= $(addprefix $(VIM_DIR)/, $(INSTALL_DIR_TARGETS))
+build__DIRECTORIES= $(addsuffix /$(dirstamp), $(BUILD_DIR_TARGETS))
+
+am_install__DIRECTORIES= $(addprefix $(HOME)/, $(INSTALL_DIR_TARGETS))
 install__DIRECTORIES= $(addsuffix /$(dirstamp), $(am_install__DIRECTORIES))
 
 am_DIRECTORIES+= $(build__DIRECTORIES)
@@ -48,7 +52,7 @@ include	$(dir)/Rules.mk
 dir	= files
 include	$(dir)/Rules.mk
 
-PREREQ+= $(build__DIRECTORIES)
+PREREQ_DIR+= $(build__DIRECTORIES)
 
 $(am_DIRECTORIES):
 	@$(INSTALL_D) $(@D)
@@ -84,17 +88,19 @@ $(HOME)/.localhost/localhost: inventory/localhost
 	@$(MKDIR_P) $(@D)
 	@$(INSTALL) $< $@
 
-PROFILE_D_FILES_SRC := $(wildcard profile.d/*.sh)
-PROFILE_D_FILES_DST := $(addprefix $(PROFILE_D)/,$(notdir $(PROFILE_D_FILES_SRC)))
-INSTALL_TARGETS += $(PROFILE_D_FILES_DST)
+profile_d_src := $(wildcard profile.d/*.sh)
 
-$(PROFILE_D_FILES_DST): $(PROFILE_D_FILES_SRC)
-	@$(INSTALL) $< $@
+TARGET_PROFILE_D = $(addprefix $(HOME)/., $(profile_d_src))
+INSTALL_TARGETS += $(TARGET_PROFILE_D)
+
+.PHONY: install_profile_d_am
+install_profile_d_am: $(profile_d_src)
+	$(INSTALL) $? $(PROFILE_D)
 
 .PHONY: install
 install: all $(install__DIRECTORIES) $(INSTALL_TARGETS)
 
-all: $(PREREQ) $(BUILD)
+all: $(prereq__DIRECTORIES) $(build__DIRECTORIES) $(PREREQ) $(BUILD)
 
 $(INSTALL_PM): 
 	echo "sudo cpan local::lib"
