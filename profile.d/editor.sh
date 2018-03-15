@@ -1,7 +1,7 @@
 # vim:ft=sh
 
-if [ -z "${$PS1+v" ]; then
-  if [ -z ${EDITORRC_INCLUDED+x} ]; then
+if [[ ! -z $PS1 ]]; then
+  if [[ -z $EDITORRC_INCLUDED ]]; then
     EDITORRC_INCLUDED=yes
     export EDITORRC_INCLUDED
 

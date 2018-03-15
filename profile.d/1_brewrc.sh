@@ -1,6 +1,6 @@
 # vim:ft=sh
 brew () {
-  env -i HOME="$HOME" /usr/local/bin/brew "$@"
+  env -i HOME="$HOME" PATH="$PATH:/usr/local/bin:/usr/local/sbin" /usr/local/bin/brew "$@"
 }
 
 if [ -z "$HOMEBREWRC_INCLUDED" ]; then
