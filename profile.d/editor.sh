@@ -1,7 +1,7 @@
-# vim:ft=sh
+# vim: set filetype=bash :
 
-if [ -z "${$PS1+v" ]; then
-  if [ -z ${EDITORRC_INCLUDED+x} ]; then
+if [[ -v PS1 ]]; then
+  if [[ ! -v EDITORRC_INCLUDED ]]; then
     EDITORRC_INCLUDED=yes
     export EDITORRC_INCLUDED
 
