@@ -16,7 +16,7 @@ if [ -z "$HOMEBREWRC_INCLUDED" ]; then
     if [ -x "$BREW_PATH" ]; then
       prepend_path "$BREW_PATH"
 
-      local BREW_DIRECTORIES=(/usr/local/opt/bison/bin /usr/local/opt/flex/bin /usr/local/opt/gperf/bin /usr/local/opt/gettext/bin)
+      local BREW_DIRECTORIES=(/usr/local/sbin /usr/local/opt/bison/bin /usr/local/opt/flex/bin /usr/local/opt/gperf/bin /usr/local/opt/gettext/bin)
       for x in "${BREW_DIRECTORIES[@]}"; do
         prepend_path "$x"
       done
