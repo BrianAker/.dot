@@ -1,5 +1,13 @@
 # vim:ft=sh
 brew () {
+  ( brew_internal "$@" )
+  b=$!
+
+  wait $b
+}
+
+brew_internal () {
+  deactivate
   env -i HOME="$HOME" PATH="$PATH:/usr/local/bin:/usr/local/sbin" /usr/local/bin/brew "$@"
 }
 
