@@ -11,3 +11,8 @@ if [ -z "$ENVRC_INCLUDED" ]; then
   LESSCHARSET=utf-8
   export LC_CTYPE LC_ALL LANG LESSCHARSET LANGUAGE
 fi
+
+if [ -z "$CLICOLOR" ]; then
+  CLICOLOR=1
+  export CLICOLOR
+fi
