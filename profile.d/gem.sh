@@ -4,8 +4,8 @@ if [ -z "$GEMRC_INCLUDED" ]; then
   GEMRC_INCLUDED=yes
   export GEMRC_INCLUDED
 
-  if which ruby >/dev/null && which gem >/dev/null; then
-    PATH="$(ruby -rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+  if command -v ruby >/dev/null && command -v gem >/dev/null; then
+    prepend_path "$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
   fi
 
 fi
