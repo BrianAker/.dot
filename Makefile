@@ -3,7 +3,7 @@ MAKEFLAGS += --no-builtin-rules
 
 .SUFFIXES:
 
-dirstamp:= .dirstamp
+dirstamp := .dirstamp
 
 ANSIBLE_PLAYBOOK:= ansible-playbook
 
@@ -38,6 +38,7 @@ build__DIRECTORIES= $(addsuffix /$(dirstamp), $(BUILD_DIR_TARGETS))
 am_install__DIRECTORIES= $(addprefix $(HOME)/, $(INSTALL_DIR_TARGETS))
 install__DIRECTORIES= $(addsuffix /$(dirstamp), $(am_install__DIRECTORIES))
 
+am_DIRECTORIES+= $(prereq__DIRECTORIES)
 am_DIRECTORIES+= $(build__DIRECTORIES)
 am_DIRECTORIES+= $(install__DIRECTORIES)
 
@@ -54,7 +55,7 @@ include	$(dir)/Rules.mk
 
 PREREQ_DIR+= $(build__DIRECTORIES)
 
-$(am_DIRECTORIES):
+%/.dirstamp:
 	@$(INSTALL_D) $(@D)
 	@$(TOUCH) $@
 
@@ -106,6 +107,6 @@ $(INSTALL_PM):
 	echo "sudo cpan local::lib"
 	exit 1
 
-.DEFAULT_GOAL:= all
+.DEFAULT_GOAL := all
 
 .NOTPARALLEL:
