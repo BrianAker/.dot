@@ -7,7 +7,10 @@ brew () {
 }
 
 brew_internal () {
-  deactivate
+  if command -v deactivate &> /dev/null
+  then
+    deactivate
+  fi
   env -i HOME="$HOME" PATH="$PATH:/usr/local/bin:/usr/local/sbin" /usr/local/bin/brew "$@"
 }
 

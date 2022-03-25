@@ -1,0 +1,7 @@
+You will need to run the following in order to use .dot for Catalina/etc....
+
+Supports both zsh and bash. To configure with bash:
+
+brew install bash && \
+echo $(brew --prefix)/bin/bash | sudo tee -a /etc/shells && \
+chsh -s $(brew --prefix)/bin/bash

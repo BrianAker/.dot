@@ -16,10 +16,3 @@ if [ -z "$PYTHONRC_INCLUDED" ]; then
     . "${HOME}/.python/bin/activate"
   fi
 fi
-
-if [ -z "$ANSIBLE_INVENTORY" ]; then
-  if [[ -d ${HOME}/.inventory ]]; then
-    ANSIBLE_INVENTORY=${HOME}/.inventory/
-    export ANSIBLE_INVENTORY
-  fi
-fi

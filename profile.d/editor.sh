@@ -1,6 +1,6 @@
 # vim: set filetype=bash :
 
-if [[ -v PS1 ]]; then
+if [[ -o interactive ]]; then
   if [[ ! -v EDITORRC_INCLUDED ]]; then
     EDITORRC_INCLUDED=yes
     export EDITORRC_INCLUDED
